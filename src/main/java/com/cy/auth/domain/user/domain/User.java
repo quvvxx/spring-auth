@@ -1,8 +1,10 @@
 package com.cy.auth.domain.user.domain;
 
 import jakarta.persistence.*;
+import lombok.Getter;
 
 @Entity
+@Getter
 @Table(name = "users")
 public class User {
 
