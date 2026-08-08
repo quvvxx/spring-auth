@@ -1,10 +1,13 @@
 package com.cy.auth.domain.user.domain;
 
 import jakarta.persistence.*;
+import lombok.Builder;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 @Entity
 @Getter
+@NoArgsConstructor
 @Table(name = "users")
 public class User {
 
@@ -22,5 +25,13 @@ public class User {
 
     @Enumerated(EnumType.ORDINAL)
     private Role role;
+
+    @Builder
+    private User(String email, String username, String password, Role role){
+        this.email = email;
+        this.username = username;
+        this.password = password;
+        this.role = role;
+    }
 
 }
