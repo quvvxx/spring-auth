@@ -1,5 +1,7 @@
 package com.cy.auth.domain.user.application;
 
+import com.cy.auth.domain.user.domain.refreshtoken.RefreshToken;
+import com.cy.auth.domain.user.domain.refreshtoken.RefreshTokenRepository;
 import com.cy.auth.domain.user.domain.user.Role;
 import com.cy.auth.domain.user.domain.user.User;
 import com.cy.auth.domain.user.domain.user.UserRepository;
@@ -21,6 +23,7 @@ public class AuthService {
 
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
+    private final RefreshTokenRepository refreshTokenRepository;
     private final JwtProvider jwtProvider;
 
     public void signUp(SignUpRequest request){
@@ -52,6 +55,9 @@ public class AuthService {
 
         String accessToken = jwtProvider.generateAccessToken(user.getId(), user.getRole());
         String refreshToken = jwtProvider.generateRefreshToken(user.getId(), user.getRole());
+
+        refreshTokenRepository.save(RefreshToken.builder()
+                .userId(user.getId()).token(refreshToken).build());
 
         return new TokenResponse(accessToken, refreshToken);
     }
