@@ -1,7 +1,9 @@
 package com.cy.auth.domain.user.presentation;
 
 import com.cy.auth.domain.user.application.AuthService;
+import com.cy.auth.domain.user.presentation.dto.request.LoginRequest;
 import com.cy.auth.domain.user.presentation.dto.request.SignUpRequest;
+import com.cy.auth.domain.user.presentation.dto.response.TokenResponse;
 import com.cy.auth.global.response.ApiResponse;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -21,5 +23,11 @@ public class AuthController {
     public ApiResponse<Void> signUp(@Valid @RequestBody SignUpRequest request){
         authService.signUp(request);
         return ApiResponse.ok("회원가입이 성공적으로 완료되었습니다.");
+    }
+
+    @PostMapping("/login")
+    public ApiResponse<TokenResponse> login(@Valid @RequestBody LoginRequest request){
+        TokenResponse response = authService.login(request);
+        return ApiResponse.ok(response, "로그인 되었습니다.");
     }
 }
