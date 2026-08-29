@@ -1,7 +1,7 @@
 package com.cy.auth.global.security.auth;
 
-import com.cy.auth.domain.user.domain.User;
-import com.cy.auth.domain.user.domain.UserRepository;
+import com.cy.auth.domain.user.domain.user.User;
+import com.cy.auth.domain.user.domain.user.UserRepository;
 import com.cy.auth.global.exception.BusinessException;
 import com.cy.auth.global.exception.ErrorCode;
 import lombok.RequiredArgsConstructor;

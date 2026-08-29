@@ -1,7 +1,7 @@
 package com.cy.auth.global.security.user;
 
-import com.cy.auth.domain.user.domain.User;
-import com.cy.auth.domain.user.domain.UserRepository;
+import com.cy.auth.domain.user.domain.user.User;
+import com.cy.auth.domain.user.domain.user.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;

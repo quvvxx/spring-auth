@@ -1,8 +1,8 @@
 package com.cy.auth.domain.user.application;
 
-import com.cy.auth.domain.user.domain.Role;
-import com.cy.auth.domain.user.domain.User;
-import com.cy.auth.domain.user.domain.UserRepository;
+import com.cy.auth.domain.user.domain.user.Role;
+import com.cy.auth.domain.user.domain.user.User;
+import com.cy.auth.domain.user.domain.user.UserRepository;
 import com.cy.auth.domain.user.presentation.dto.request.LoginRequest;
 import com.cy.auth.domain.user.presentation.dto.request.SignUpRequest;
 import com.cy.auth.domain.user.presentation.dto.response.TokenResponse;

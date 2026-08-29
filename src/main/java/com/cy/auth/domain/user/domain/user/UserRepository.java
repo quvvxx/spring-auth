@@ -1,4 +1,4 @@
-package com.cy.auth.domain.user.domain;
+package com.cy.auth.domain.user.domain.user;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 

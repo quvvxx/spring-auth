@@ -1,6 +1,6 @@
 package com.cy.auth.global.security;
 
-import com.cy.auth.domain.user.domain.Role;
+import com.cy.auth.domain.user.domain.user.Role;
 import com.cy.auth.global.security.auth.CustomUserDetailsService;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.JwtException;
