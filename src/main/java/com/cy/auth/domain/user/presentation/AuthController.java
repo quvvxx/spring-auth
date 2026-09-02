@@ -2,11 +2,13 @@ package com.cy.auth.domain.user.presentation;
 
 import com.cy.auth.domain.user.application.AuthService;
 import com.cy.auth.domain.user.presentation.dto.request.LoginRequest;
+import com.cy.auth.domain.user.presentation.dto.request.ReissueRequest;
 import com.cy.auth.domain.user.presentation.dto.request.SignUpRequest;
 import com.cy.auth.domain.user.presentation.dto.response.TokenResponse;
 import com.cy.auth.global.response.ApiResponse;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.antlr.v4.runtime.Token;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -29,5 +31,11 @@ public class AuthController {
     public ApiResponse<TokenResponse> login(@Valid @RequestBody LoginRequest request){
         TokenResponse response = authService.login(request);
         return ApiResponse.ok(response, "로그인 되었습니다.");
+    }
+
+    @PostMapping("/reissue")
+    public ApiResponse<TokenResponse> reissue(@Valid @RequestBody ReissueRequest request){
+        TokenResponse response = authService.reissue(request);
+        return ApiResponse.ok(response, "재발급 되었습니다.");
     }
 }

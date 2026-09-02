@@ -6,6 +6,7 @@ import com.cy.auth.domain.user.domain.user.Role;
 import com.cy.auth.domain.user.domain.user.User;
 import com.cy.auth.domain.user.domain.user.UserRepository;
 import com.cy.auth.domain.user.presentation.dto.request.LoginRequest;
+import com.cy.auth.domain.user.presentation.dto.request.ReissueRequest;
 import com.cy.auth.domain.user.presentation.dto.request.SignUpRequest;
 import com.cy.auth.domain.user.presentation.dto.response.TokenResponse;
 import com.cy.auth.global.exception.BusinessException;
@@ -25,6 +26,8 @@ public class AuthService {
     private final PasswordEncoder passwordEncoder;
     private final RefreshTokenRepository refreshTokenRepository;
     private final JwtProvider jwtProvider;
+
+    private static final String REFRESH_TOKEN = "refresh";
 
     public void signUp(SignUpRequest request){
 
@@ -59,6 +62,35 @@ public class AuthService {
         refreshTokenRepository.save(RefreshToken.builder()
                 .userId(user.getId()).token(refreshToken).build());
 
+        return new TokenResponse(accessToken, refreshToken);
+    }
+
+    public TokenResponse reissue(ReissueRequest request){
+
+        if (!jwtProvider.validateToken(request.refreshToken()))
+            throw new BusinessException(ErrorCode.INVALID_TOKEN);
+
+        if (!jwtProvider.getTokenType(request.refreshToken()).equals(REFRESH_TOKEN))
+            throw new BusinessException(ErrorCode.INVALID_TOKEN);
+
+        Long userId = jwtProvider.getAccountId(request.refreshToken());
+        Role role = jwtProvider.getRole(request.refreshToken());
+
+        RefreshToken savedRefreshToken = refreshTokenRepository.findById(userId)
+                .orElseThrow(() -> new BusinessException(ErrorCode.INVALID_TOKEN));
+
+        if (!savedRefreshToken.getToken().equals(request.refreshToken()))
+            throw new BusinessException(ErrorCode.INVALID_TOKEN);
+
+        String accessToken = jwtProvider.generateAccessToken(userId, role);
+        String refreshToken = jwtProvider.generateRefreshToken(userId, role);
+
+        RefreshToken newRefreshToken = RefreshToken.builder()
+                .userId(userId)
+                .token(refreshToken)
+                .build();
+
+        refreshTokenRepository.save(newRefreshToken);
         return new TokenResponse(accessToken, refreshToken);
     }
 }
