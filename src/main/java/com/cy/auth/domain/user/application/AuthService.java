@@ -6,6 +6,7 @@ import com.cy.auth.domain.user.domain.user.Role;
 import com.cy.auth.domain.user.domain.user.User;
 import com.cy.auth.domain.user.domain.user.UserRepository;
 import com.cy.auth.domain.user.presentation.dto.request.LoginRequest;
+import com.cy.auth.domain.user.presentation.dto.request.LogoutRequest;
 import com.cy.auth.domain.user.presentation.dto.request.ReissueRequest;
 import com.cy.auth.domain.user.presentation.dto.request.SignUpRequest;
 import com.cy.auth.domain.user.presentation.dto.response.TokenResponse;
@@ -92,5 +93,22 @@ public class AuthService {
 
         refreshTokenRepository.save(newRefreshToken);
         return new TokenResponse(accessToken, refreshToken);
+    }
+
+    public void logout(LogoutRequest request){
+        if (!jwtProvider.validateToken(request.refreshToken()))
+            throw new BusinessException(ErrorCode.INVALID_TOKEN);
+
+        if (!jwtProvider.getTokenType(request.refreshToken()).equals(REFRESH_TOKEN))
+            throw new BusinessException(ErrorCode.INVALID_TOKEN);
+
+        Long userId = jwtProvider.getAccountId(request.refreshToken());
+
+        System.out.println("accountId = " + userId);
+        System.out.println("before = " + refreshTokenRepository.existsById(userId));
+
+        refreshTokenRepository.deleteById(userId);
+
+        System.out.println("after = " + refreshTokenRepository.existsById(userId));
     }
 }
